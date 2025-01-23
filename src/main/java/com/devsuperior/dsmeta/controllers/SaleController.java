@@ -1,14 +1,14 @@
 package com.devsuperior.dsmeta.controllers;
 
+import com.devsuperior.dsmeta.dto.SaleMinDTO;
+import com.devsuperior.dsmeta.dto.SaleReportMinDTO;
+import com.devsuperior.dsmeta.dto.SaleSummaryMinDTO;
+import com.devsuperior.dsmeta.services.SaleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.devsuperior.dsmeta.dto.SaleMinDTO;
-import com.devsuperior.dsmeta.services.SaleService;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/sales")
@@ -24,14 +24,15 @@ public class SaleController {
 	}
 
 	@GetMapping(value = "/report")
-	public ResponseEntity<?> getReport() {
-		// TODO
-		return null;
+	public ResponseEntity<List<SaleReportMinDTO>> getReport(@RequestParam(name = "minDate", defaultValue = "") String minDate,
+															@RequestParam(name = "maxDate", defaultValue = "") String maxDate,
+															@RequestParam(name = "name", defaultValue = "") String name) {
+		return ResponseEntity.ok(service.findSalesReport(minDate, maxDate, name));
 	}
 
 	@GetMapping(value = "/summary")
-	public ResponseEntity<?> getSummary() {
-		// TODO
-		return null;
+	public ResponseEntity<List<SaleSummaryMinDTO>> getSummary(@RequestParam(name = "minDate", defaultValue = "") String minDate,
+															  @RequestParam(name = "maxDate", defaultValue = "") String maxDate) {
+		return ResponseEntity.ok(service.findSellerSalesSummary(minDate, maxDate));
 	}
 }
